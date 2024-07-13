@@ -1,0 +1,20 @@
+- name: install package on system
+  include: "{{ router_os_distribution }}-pkg.yml"
+
+- name: enable ddclient service
+  systemd: name=ddclient enabled=true
+
+- name: generate ddclient config
+  template: src={{ item.path }} dest=/{{ item.path | regex_replace('\.j2$', '') }} owner=root group=root mode=0600
+  with_filetree: templates/
+  register: ddclient_conf
+  when: item.state in ('file', 'link')
+
+- name: restart ddclient
+  systemd: name=ddclient state=restarted
+  when: ddclient_conf.changed
+
+# Not implemented:
+# ddclient has an example script to run upon pppoe interface up https://github.com/ddclient/ddclient/blob/develop/sample-etc_ppp_ip-up.local
+# This is not very necessary for me because the pppoe interface keeps up for a
+# long time. Also we can set a short interval of check to achieve faster dynamic DNS update.

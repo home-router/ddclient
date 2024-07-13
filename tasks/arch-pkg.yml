@@ -1,0 +1,4 @@
+- name: install ddclient on Archlinux
+  pacman:
+      name: ddclient
+      state: present

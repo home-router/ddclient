@@ -1,0 +1,4 @@
+- name: install ddclient on Ubuntu
+  apt:
+      name: ddclient
+      state: present

@@ -1,0 +1,11 @@
+# check ip change interval
+ddclient_check_interval: 60
+
+ddclient_interfaces:
+  pppoe0:
+    service: namecheap
+    host-name: myrouter
+    login: username
+    password: secret
+    max_interval: 28d
+
